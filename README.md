@@ -12,7 +12,7 @@
 - Sales
 - User
 
-![Model]()
+![Model](https://github.com/klc-pakize/django_stock_app/blob/master/ERD.png)
 
 # Users
 
