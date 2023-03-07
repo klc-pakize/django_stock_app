@@ -12,6 +12,7 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'product_count']
 
     #! Method that calculates the total number of products belonging to a Category:
+    #! Bir Kategoriye ait toplam ürün sayısını hesaplayan yöntem:
     def get_product_count(self, obj):
         return Product.objects.filter(category_id = obj.id).count() 
 
@@ -27,6 +28,7 @@ class ProductSerializer(serializers.ModelSerializer):
         read_only_fields = ['stock']
 
 #! We have created a new serializer to display the product details for the category when searching using the name filter in the category enpoint.
+#! Kategori giriş noktasındaki name filtresini kullanarak arama yaparken kategorinin ürün ayrıntılarını görüntülemek için yeni bir serializer oluşturduk:
 class CategoryProductSerializer(serializers.ModelSerializer):
 
     products = ProductSerializer(many = True)
@@ -36,6 +38,7 @@ class CategoryProductSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'product_count', 'products']
 
     #! Method that calculates the total number of products belonging to a Category:
+    #! Bir Kategoriye ait toplam ürün sayısını hesaplayan yöntem:
     def get_product_count(self, obj):
         return Product.objects.filter(category_id = obj.id).count() 
     

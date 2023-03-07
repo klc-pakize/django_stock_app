@@ -17,10 +17,12 @@ class CategoryView(ModelViewSet):
     serializer_class = CategorySerializer
 
     #! Adding the search ('?search=') attribute to the category endpoint:
+    #! Arama ('?search=') özniteliğini kategori uç noktasına ekleme:
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     search_fields = ['name']
 
     #! Adding the search ('name=) filter attribute to the category endpoint:
+    #! Arama ('name=) filtre özniteliğini kategori uç noktasına ekleme:
     filterset_fields = ['name']
 
     """
@@ -30,10 +32,12 @@ class CategoryView(ModelViewSet):
     3- Allow view, delete, change and add operations for Brand, firm, category and product in the group.
     """
     #! Note: The get operation is created by default even if the user does not belong to any group.
+    #! Not: Get işlemi, kullanıcı herhangi bir gruba ait olmasa bile varsayılan olarak oluşturulur.
     permission_classes = [DjangoModelPermissions]
 
 
     #! We've created a new series generator to display product details for the category when searching using the name filter at the category entry point:
+    #! Kategori giriş noktasındaki name filtresini kullanarak arama yaparken kategorinin ürün ayrıntılarını görüntülemek için yeni bir serializer oluşturduk:
     def get_serializer_class(self):
         if self.request.query_params.get('name'):
             return CategoryProductSerializer
@@ -78,7 +82,7 @@ class PurchasesView(ModelViewSet):
         serializer.is_valid(raise_exception=True)
         #! #############  ADD Product Stock ############
         
-        purchase = request.data # we assign the incoming data to the variable
+        purchase = request.data # we assign the incoming data to the variable | # Gelen verileri değişkene atarız
         product = Product.objects.get(id = purchase['product_id'])
         product.stock += purchase['quantity']
         product.save()
@@ -89,7 +93,7 @@ class PurchasesView(ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
     def perform_create(self, serializer):
-        serializer.save(user = self.request.user)  # we can reach the user who sent the data like this
+        serializer.save(user = self.request.user)  # we can reach the user who sent the data like this | # Bu şekilde veriyi gönderen kullanıcıya ulaşabiliriz
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
@@ -98,8 +102,8 @@ class PurchasesView(ModelViewSet):
         serializer.is_valid(raise_exception=True)        
         #! #############  UPDATE Product Stock ############
         
-        purchase = request.data # we assign the incoming data to the variable
-        product = Product.objects.get(id = instance.product_id)  # existing data
+        purchase = request.data # we assign the incoming data to the variable | # Gelen verileri değişkene atarız
+        product = Product.objects.get(id = instance.product_id)  # existing data | # mevcut veriler
         conclusion = purchase['quantity'] - instance.quantity
         product.stock += conclusion
         product.save()
@@ -121,7 +125,7 @@ class PurchasesView(ModelViewSet):
         instance = self.get_object()
         #! #############  DELETE Product Stock ############
         
-        product = Product.objects.get(id = instance.product_id)  # existing data
+        product = Product.objects.get(id = instance.product_id)  # existing data | # mevcut veriler
         product.stock += instance.quantity
         product.save()
 
@@ -147,7 +151,7 @@ class SalesView(ModelViewSet):
         serializer.is_valid(raise_exception=True)
         #! #############  REDUCE Product Stock ############
         
-        sales = request.data # we assign the incoming data to the variable
+        sales = request.data # we assign the incoming data to the variable | # Gelen verileri değişkene atarız
         product = Product.objects.get(id = sales['product_id'])
         if sales['quantity'] <= product.stock:
             product.stock -= sales['quamtity']
@@ -164,7 +168,8 @@ class SalesView(ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
     def perform_create(self, serializer):
-        serializer.save(user = self.request.user)  # we can reach the user who sent the data like this
+        serializer.save(user = self.request.user)  # we can reach the user who sent the data like this # Bu şekilde veriyi gönderen kullanıcıya ulaşabiliriz
+
     
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
@@ -173,7 +178,7 @@ class SalesView(ModelViewSet):
         serializer.is_valid(raise_exception=True)        
         #! #############  UPDATE Product Stock ############
         
-        sale = request.data # we assign the incoming data to the variable
+        sale = request.data # we assign the incoming data to the variable | # Gelen verileri değişkene atarız
         product= Product.objects.get(id=instance.product_id) 
         
         if sale["quantity"] > instance.quantity:

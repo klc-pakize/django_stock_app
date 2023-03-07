@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 #! Abstract Class: If the same fields are to be found in more than one model, in order to save ourselves from repetition, an abstract class with repetitive fields is created.
+#! Abstract Class: Aynı fields birden fazla modelde bulunacaksa tekrardan kurtulmak için tekrarlanan fields Abstract Class oluşturulur.
 class UpdateCreate(models.Model):
     createds = models.DateTimeField(auto_now_add = True)
     updated = models.DateTimeField(auto_now = True)
