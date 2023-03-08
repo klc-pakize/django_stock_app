@@ -6,8 +6,8 @@
 
 - Category
 - Brand
-- Product
 - Firm
+- Product
 - Purchases
 - Sales
 - User
