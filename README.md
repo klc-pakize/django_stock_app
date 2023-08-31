@@ -31,5 +31,5 @@
 
 # Live Project
 
-- <a href="">Live of the project</a>
-- <a href="">For the swagger of the project</a>
+- <a href="https://pakizeklc.pythonanywhere.com/">Live of the project</a>
+- <a href="https://pakizeklc.pythonanywhere.com/swagger/">For the swagger of the project</a>
