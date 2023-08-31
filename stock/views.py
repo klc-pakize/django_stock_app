@@ -84,7 +84,7 @@ class PurchasesView(ModelViewSet):
         
         purchase = request.data # we assign the incoming data to the variable | # Gelen verileri değişkene atarız
         product = Product.objects.get(id = purchase['product_id'])
-        product.stock += purchase['quantity']
+        product.stock += int(purchase['quantity'])
         product.save()
 
         #! #############################################
@@ -104,7 +104,7 @@ class PurchasesView(ModelViewSet):
         
         purchase = request.data # we assign the incoming data to the variable | # Gelen verileri değişkene atarız
         product = Product.objects.get(id = instance.product_id)  # existing data | # mevcut veriler
-        conclusion = purchase['quantity'] - instance.quantity
+        conclusion = int(purchase['quantity']) - instance.quantity
         product.stock += conclusion
         product.save()
 
@@ -153,8 +153,8 @@ class SalesView(ModelViewSet):
         
         sales = request.data # we assign the incoming data to the variable | # Gelen verileri değişkene atarız
         product = Product.objects.get(id = sales['product_id'])
-        if sales['quantity'] <= product.stock:
-            product.stock -= sales['quamtity']
+        if int(sales['quantity']) <= product.stock:
+            product.stock -= int(sales['quantity'])
             product.save()
         else:
             data = {
@@ -181,10 +181,10 @@ class SalesView(ModelViewSet):
         sale = request.data # we assign the incoming data to the variable | # Gelen verileri değişkene atarız
         product= Product.objects.get(id=instance.product_id) 
         
-        if sale["quantity"] > instance.quantity:
+        if int(sale["quantity"]) > instance.quantity:
             
-            if sale["quantity"] <= instance.quantity + product.stock:
-                product.stock = instance.quantity + product.stock - sale["quantity"]
+            if int(sale["quantity"]) <= instance.quantity + product.stock:
+                product.stock = instance.quantity + product.stock - int(sale["quantity"])
                 product.save()
             else:
                 data = {
@@ -192,8 +192,8 @@ class SalesView(ModelViewSet):
                 }
                 return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
             
-        elif instance.quantity >= sale["quantity"]:
-            product.stock += instance.quantity - sale["quantity"]
+        elif instance.quantity >= int(sale["quantity"]):
+            product.stock += instance.quantity - int(sale["quantity"])
             product.save()
 
         #! #############################################

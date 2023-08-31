@@ -12,7 +12,6 @@ class UpdateCreate(models.Model):
         abstract = True
 
 
-    
 class Category(models.Model):
 
     name = models.CharField(max_length = 25)
